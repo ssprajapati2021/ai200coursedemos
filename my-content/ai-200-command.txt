@@ -1,0 +1,15 @@
+az login --tenant "a2fb971a-e8c6-4298-89e4-5f7c651a8bfd"
+
+az group create --name rg-ai-200 --location eastus
+
+az acr create --resource-group rg-ai-200 --name mynewacrai2002026 --sku Basic
+
+az acr update --name mynewacrai2002026 --admin-enabled true
+
+az acr login --name mynewacrai2002026
+
+docker build -t acr-demo-app:1.0 .
+
+docker tag acr-demo-app:1.0 mynewacrai2002026.azurecr.io/acr-demo-app:1.0
+
+docker push mynewacrai2002026.azurecr.io/acr-demo-app:1.0 
