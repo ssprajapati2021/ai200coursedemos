@@ -37,3 +37,34 @@ az acr task create `
   --context "https://github.com/ssprajapati2021/ai200coursedemos.git#main" `
   --file "acr-demo/Dockerfile" `
   --git-access-token $env:GIT_ACCESS_TOKEN
+
+# Run Task Manually
+az acr task run --with registery name and task name
+# Run on git commit
+######Git commit command
+git add .
+git commit -m "Trigger tasks"
+git push
+
+# Creating env variable in powershell
+$env:RG_NAME = "rg-ai-200"
+$env:PLAN_NAME = "asp-ai200-demo"
+$env:WEBAPP_NAME = "demo-web-app-ai200"
+$env:SKU = "B1"
+$env:ACR_NAME = "mynewacrai2002026"
+$env:IMAGE_NAME = "acr-demo-app:1.0"
+
+#------Creating App Service PLAN
+az appservice plan create `
+  --name $env:PLAN_NAME `
+  --resource-group $env:RG_NAME `
+  --location westus2 `
+  --sku $env:SKU `
+  --is-linux
+
+  #----Creating Web App
+  az webapp create `
+  --resource-group $env:RG_NAME `
+  --plan $env:PLAN_NAME `
+  --name $env:WEBAPP_NAME `
+  --deployment-container-image-name "$env:ACR_NAME.azurecr.io/$env:IMAGE_NAME"
