@@ -1,15 +1,23 @@
+# Azure Login
 az login --tenant "a2fb971a-e8c6-4298-89e4-5f7c651a8bfd"
 
+# Create Resource Group
 az group create --name rg-ai-200 --location eastus
 
+# Create Azure Container Registry (ACR)
 az acr create --resource-group rg-ai-200 --name mynewacrai2002026 --sku Basic
 
+# Enable Admin Access for Azure Container Registry
 az acr update --name mynewacrai2002026 --admin-enabled true
 
+# Log in to Azure Container Registry
 az acr login --name mynewacrai2002026
 
+# Build Docker Image Locally
 docker build -t acr-demo-app:1.0 .
 
+# Tag Local Docker Image for Azure Container Registry
 docker tag acr-demo-app:1.0 mynewacrai2002026.azurecr.io/acr-demo-app:1.0
 
-docker push mynewacrai2002026.azurecr.io/acr-demo-app:1.0 
+# Push Docker Image to Azure Container Registry
+docker push mynewacrai2002026.azurecr.io/acr-demo-app:1.0
