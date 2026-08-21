@@ -21,3 +21,19 @@ docker tag acr-demo-app:1.0 mynewacrai2002026.azurecr.io/acr-demo-app:1.0
 
 # Push Docker Image to Azure Container Registry
 docker push mynewacrai2002026.azurecr.io/acr-demo-app:1.0
+
+# Build directly in ACR using ACR Tasks
+az acr build --registry mynewacrai2002026 --image acr-demo-app:task-build-1.0 .
+Helm is a package manager for Kubernetes. Think of it like NuGet for .NET or pip for Python, but for deploying applications to Kubernetes.
+
+# Set Git Access token inside powershell
+$env:GIT_ACCESS_TOKEN ="github_pat_1"
+
+# Creating a task in Github to build the image in ACR auto once checkin
+az acr task create `
+  --registry mynewacrai2002026 `
+  --name ai200-buildtasknew `
+  --image "acr-demo-app:{{.Run.ID}}" `
+  --context "https://github.com/ssprajapati2021/ai200coursedemos.git#main" `
+  --file "acr-demo/Dockerfile" `
+  --git-access-token $env:GIT_ACCESS_TOKEN
